@@ -1,41 +1,42 @@
-
+from django.core.paginator import Paginator
 # Create your views here.
 from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.decorators import method_decorator
-from .models import Post, Comment
-from .forms import PostForm, CommentForm
-
-@method_decorator(login_required, name='dispatch')
-class PostCreateView(View):
-    form_class = PostForm
-    template_name = 'community/post_form.html'
-
-    def get(self, request):
-        form = self.form_class()
-        context = {'form': form}
-        return render(request, self.template_name, context)
-
-    def post(self, request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            messages.success(request, '게시물이 성공적으로 작성되었습니다.')
-            return redirect('post_detail', pk=post.pk)
-        context = {'form': form}
-        return render(request, self.template_name, context)
-    
-    
-class PostDetailView(View):
+from django.urls import reverse_lazy
+from django.shortcuts import render, get_object_or_404
+from django.views.generic import ListView, DetailView,CreateView
+from .models import Post
+from .forms import PostForm
+class CreatePostView(CreateView):
     model = Post
-    template_name = 'community/post_detail.html'
+    fields = ['title', 'content', 'image', 'author',]
 
-    def get(self, request, pk):
-        post = self.model.objects.get(pk=pk)
-        comments = post.comments.all()
-        context = {'post': post, 'comments': comments}
-        return render(request, self.template_name, context)
+    template_name = 'Posts/create_post.html'
+    success_url = reverse_lazy('Posts:post_list')
+
+    def form_valid(self, form):
+        form.instance.author_ip = self.request.META.get('HTTP_X_FORWARDED_FOR', self.request.META.get('REMOTE_ADDR'))
+
+        return super().form_valid(form)
+class ListPostView(ListView):
+    model = Post
+    template_name = 'Posts/list_post.html'
+    context_object_name = 'posts'
+    ordering = ['-pub_date']
+    paginate_by = 10
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # 현재 페이지 번호 가져오기
+        page = self.request.GET.get('page')
+        # 현재 페이지 번호에 해당하는 게시물 목록 가져오기
+        paginator = Paginator(context['posts'], self.paginate_by)
+        context['posts'] = paginator.get_page(page)
+        return context
+class DetailPostView(DetailView):
+    model = Post
+    template_name = 'Posts/detail_post.html'
+    context_object_name = 'post'
+
