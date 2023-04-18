@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 <style>
   .emoji {
     font-size: 20px;
   }
+  #comment-form-wrapper {
+    color: coral !important; /* 파스텔톤 색상 코드 */
+}
 </style>
 {% block content %}
 <div class="container my-5">
@@ -29,22 +33,20 @@
       {% empty %}
       <p>댓글이 없습니다.</p>
       {% endfor %}
-      <h4 class="my-4">댓글 작성</h4>
-      <form method="post">
-        {% csrf_token %}
-        <div class="form-group">
-          <label for="author">작성자</label>
-          <input type="text" name="author" id="author" class="form-control" required>
-        </div>
-        <div class="form-group">
-          <label for="content">내용</label>
-          <textarea name="content" id="content" class="form-control" required></textarea>
-        </div>
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary">댓글 작성</button>
-        </div>
-      </form>
+
+<!-- 댓글 작성 폼 -->
+<div id="comment-form-wrapper" style="background-color: #f5c2c2;">
+  <h4>댓글 작성</h4>
+  <form id="comment-form" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <input type="text" name="author" placeholder="작성자" class="form-control">
     </div>
-  </div>
+    <div class="form-group">
+      <textarea name="content" placeholder="내용" class="form-control"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary float-right">작성</button>
+  </form>
 </div>
+
 {% endblock %}
