@@ -26,13 +26,15 @@ SECRET_KEY = 'django-insecure-o+b%g220@lxu*r-dw(-)*maju$+1gnsxdfex%hg1wo0nd+em-j
 DEBUG = True
 
 ALLOWED_HOSTS = []
-STATIC_URL = '/static/'
 
+STATIC_URL = '/static/'
+CKEDITOR_UPLOAD_PATH = "uploads/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-
-# Application definition
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join('media')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -45,7 +47,9 @@ INSTALLED_APPS = [
     'crispy_forms',
     'bootstrap4',
     'crispy_bootstrap4',
-
+    'froala_editor',
+    'ckeditor',
+    'tinymce',
 ]
 
 MIDDLEWARE = [
@@ -124,9 +128,43 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+TINYMCE_JS_URL = "https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js";
+
+TINYMCE_COMPRESSOR = False;
+TINYMCE_DEFAULT_CONFIG = {
+    'cleanup_on_startup': True,
+    'custom_undo_redo_levels': 20,
+    'selector': 'textarea',
+    'theme': 'silver',
+    'plugins': '''
+            textcolor save link image media preview codesample contextmenu
+            table code lists fullscreen  insertdatetime  nonbreaking
+            contextmenu directionality searchreplace wordcount visualblocks
+            visualchars code fullscreen autolink lists  charmap print  hr
+            anchor pagebreak
+            ''',
+    'toolbar1': '''
+            fullscreen preview bold italic underline | fontselect,
+            fontsizeselect  | forecolor backcolor | alignleft alignright |
+            aligncenter alignjustify | indent outdent | bullist numlist table |
+            | link image media | codesample |
+            ''',
+    'toolbar2': '''
+            visualblocks visualchars |
+            charmap hr pagebreak nonbreaking anchor |  code |
+            ''',
+    'contextmenu': 'formats | link image',
+    'menubar': True,
+    'statusbar': True,
+    'theme_advanced_resizing': True,
+    "images_upload_url": "upload_image",
+    'width': '100%',
+    'height': 600,
+    'language':'ko_KR'
+
+}

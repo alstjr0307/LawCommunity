@@ -60,7 +60,7 @@
   <div class="posts-header">
     <h1>로입게시판</h1>
     <div>
-      <a href="{% url 'Posts:post_new' %}" class="btn btn-primary">New Post</a>
+      <a href="{% url 'Posts:post_new' %}" class="btn btn-warning">글 작성</a>
     </div>
   </div>
   <hr>
@@ -77,7 +77,7 @@
             <small class="text-muted">{{ post.pub_date|date:'Y-m-d' }}</small>
           </div>
           <small class="text-muted">{{ post.author }}</small>
-          <p class="card-text" style="margin-right: 20px">{{ post.content|truncatechars:50 }}</p>
+
         </div>
         <a href="{% url 'Posts:post_detail' post.id %}" class="stretched-link"></a>
       </div>

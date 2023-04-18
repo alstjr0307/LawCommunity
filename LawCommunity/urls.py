@@ -16,10 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from .views import HomeView
-
+from .views import HomeView, upload_image
+from django.conf.urls.static import static
+from .settings import STATIC_URL, MEDIA_ROOT, STATIC_ROOT, MEDIA_URL
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', HomeView.as_view(), name='home'),
     path('posts/',include('Posts.urls')),
+    path('tinymce/', include('tinymce.urls')),
+
 ]
+urlpatterns += static(STATIC_URL, document_root=STATIC_ROOT)
+urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)

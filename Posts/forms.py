@@ -1,21 +1,22 @@
 from django import forms
 from .models import Post
 from .models import Comment
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Submit, Row, Column
+
+from tinymce.widgets import TinyMCE
 class PostForm(forms.ModelForm):
+    content = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
     class Meta:
         model = Post
         fields = ['title', 'content', 'image', 'author', 'author_ip']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'content': forms.Textarea(attrs={'class': 'form-control'}),
+            'content' : forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30})),
             'image': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
             'author': forms.TextInput(attrs={'class': 'form-control'}),
             'author_ip': forms.HiddenInput(),
         }
-
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column
-
 class CommentForm(forms.ModelForm):
     content = forms.CharField(label='댓글', widget=forms.Textarea(attrs={'rows': 3}))
 

@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %} <!-- crispy_forms_tags import -->
-
+{% block head %}
+  {{ block.super }}
+  {{ form.media }} <!-- tinymce 사용을 위해 추가 -->
+{% endblock %}
 {% block content %}
 <div class="container">
   <div class="row justify-content-center">
@@ -18,9 +21,6 @@
             </div>
             <div class="form-group">
               {{ form.author|as_crispy_field }}
-            </div>
-            <div class="form-group">
-              {{ form.image|as_crispy_field }}
             </div>
             <button class="btn btn-success" type="submit">작성 완료</button>
           </form>

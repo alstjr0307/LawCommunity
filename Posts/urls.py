@@ -18,10 +18,13 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import path
 from .views import ListPostView, DetailPostView, CreatePostView
+from LawCommunity.views import upload_image
 
 app_name = 'Posts'
 urlpatterns = [
     path('', ListPostView.as_view(), name='post_list'),
     path('<int:pk>/', DetailPostView.as_view(), name='post_detail'),
     path('new/', CreatePostView.as_view(), name='post_new'),
+    path('new/upload_image', upload_image, name="upload_image"),
+
 ]
