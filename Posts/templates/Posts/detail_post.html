@@ -41,21 +41,39 @@ a {word-wrap: break-word; max-width:100%;}
           <h5 class="card-title" style="font-size: 14px; margin-bottom: 5px;">{{ comment.author }} <span style="font-size: 12px;">({{ comment.author_ip }})</span></h5>
           <p class="card-text" style="font-size: 16px;">{{ comment.content|safe }}</p>
         </div>
+        <div class="card-footer">
+          <form method="post" action="{% url 'Posts:delete_comment' comment.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger float-right">삭제</button>
+          </form>
+        </div>
       </div>
       {% empty %}
       <p>댓글이 없습니다.</p>
       {% endfor %}
+    </div>
+  </div>
 
 <!-- 댓글 작성 폼 -->
-<div id="comment-form-wrapper" style="background-color: #f5c2c2; padding: 30px; border-radius:15px;">
-  <h4 style="margin-bottom: 20px;">댓글 작성</h4>
+<div id="comment-form-wrapper" style="background-color: #f5c2c2; padding: 20px; border-radius:15px;">
+  <h4 style="margin-bottom: 10px;">댓글 작성</h4>
   <form id="comment-form" method="post">
     {% csrf_token %}
-    <div class="form-group">
-      <input type="text" name="author" placeholder="작성자" class="form-control">
+    <div class="form-group row">
+      <label for="{{ form.author.id_for_label }}" class="emoji" style="font-size: 20px; margin-left:15px">👤</label>
+      <div class="col-sm-3">
+        
+        <input type="text" required=True class="form-control" id="{{ form.author.id_for_label }}" name="{{ form.author.name }}" maxlength="{{ form.author.field.max_length }}" required, placeholder="닉네임">
+      
+      </div>
+      <label for="{{ form.password.id_for_label }}" class="emoji" style="font-size: 20px;">🔒</label>
+      <div class="col-sm-3">
+    
+        <input type="password" required=True name="{{ form.password.name }}" id="{{ form.password.id_for_label }}" class="form-control" placeholder="비밀번호 입력">
+      </div>
     </div>
     <div class="form-group">
-      <textarea name="content" placeholder="내용" class="form-control" style="height: 100px;"></textarea>
+      <textarea name="content" placeholder="내용" class="form-control" style="height: 100px;", required=True></textarea>
       
       <button type="submit" class="btn btn-primary float-right">작성</button>
     </div>

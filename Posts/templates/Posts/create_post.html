@@ -11,12 +11,12 @@
     <div class="form-group row">
       <label for="{{ form.author.id_for_label }}" class="col-sm-2 col-form-label">작성자</label>
       <div class="col-sm-2">
-        <input type="text" class="form-control" id="{{ form.author.id_for_label }}" name="{{ form.author.name }}" value="{{ form.author.value }}" maxlength="{{ form.author.field.max_length }}" required>
+        <input type="text" required=True class="form-control" id="{{ form.author.id_for_label }}" name="{{ form.author.name }}" maxlength="{{ form.author.field.max_length }}" required, placeholder="닉네임">
       
       </div>
       <div class="col-sm-2">
     
-        <input type="password" name="{{ form.password.name }}" id="{{ form.password.id_for_label }}" class="form-control" placeholder="비밀번호 입력">
+        <input type="password" required=True name="{{ form.password.name }}" id="{{ form.password.id_for_label }}" class="form-control" placeholder="비밀번호 입력">
       </div>
     </div>
 

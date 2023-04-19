@@ -1,12 +1,13 @@
 from django.db import models
 from django.utils import timezone
 from tinymce.models import HTMLField 
+from django.urls import reverse
 class Post(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=20)
     content = HTMLField()
     image = models.ImageField(upload_to='images/', blank=True, null=True)
     pub_date = models.DateTimeField(auto_now_add=True)
-    author = models.CharField(max_length=8, default='익명')
+    author = models.CharField(max_length=8)
     author_ip = models.CharField(max_length=15)
     password = models.CharField(max_length=100)
     is_deleted = models.BooleanField(default=False)
@@ -21,6 +22,7 @@ class Post(models.Model):
 
     def summary(self):
         return self.content[:100]
+    
 
 
 class Comment(models.Model):
@@ -38,3 +40,5 @@ class Comment(models.Model):
         return False
     def __str__(self):
         return self.content
+    def get_absolute_url(self):
+        return reverse('comment_delete', kwargs={'pk': self.pk})
