@@ -14,7 +14,7 @@ from django.views.generic.edit import FormMixin
 
 class CreatePostView(CreateView):
     model = Post
-    fields = ['title', 'content', 'image', 'author',]
+    fields = ['title', 'content', 'password','image', 'author',]
     template_name = 'Posts/create_post.html'
     success_url = reverse_lazy('Posts:post_list')
 

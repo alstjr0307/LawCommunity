@@ -7,22 +7,19 @@ from crispy_forms.layout import Layout, Submit, Row, Column
 from tinymce.widgets import TinyMCE
 class PostForm(forms.ModelForm):
     content = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30}))
+    password = forms.CharField(max_length=50, widget=forms.PasswordInput(render_value=False,attrs={'placeholder': '********'}))
+
     class Meta:
         model = Post
-        fields = ['title', 'content', 'image', 'author', 'author_ip']
-        widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'content' : forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 30})),
-            'image': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
-            'author': forms.TextInput(attrs={'class': 'form-control'}),
-            'author_ip': forms.HiddenInput(),
-        }
+        fields = ['title', 'content', 'author', 'password', 'author_ip']
+
 class CommentForm(forms.ModelForm):
     content = forms.CharField(label='댓글', widget=forms.Textarea(attrs={'rows': 3}))
+    password = forms.CharField(widget=forms.PasswordInput(), required=True, max_length=128, label="비밀번호")
 
     class Meta:
         model = Comment
-        fields = ['author', 'content']
+        fields = ['author', 'content', 'password']
         widgets = {
             'author': forms.TextInput(attrs={'placeholder': '작성자'}),
         }
@@ -33,6 +30,7 @@ class CommentForm(forms.ModelForm):
         helper.layout = Layout(
             Row(
                 Column('author', css_class='form-group col-md-6 mb-0'),
+                Column('password', css_class='form-group col-md-6 mb-0'),
                 css_class='form-row'
             ),
             'content',

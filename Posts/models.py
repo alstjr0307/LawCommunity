@@ -8,7 +8,13 @@ class Post(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True)
     author = models.CharField(max_length=8, default='익명')
     author_ip = models.CharField(max_length=15)
-    
+    password = models.CharField(max_length=100)
+    is_deleted = models.BooleanField(default=False)
+    def delete_with_password(self, password):
+        if self.password == password:
+            self.is_deleted= True
+            return True
+        return False
 
     def __str__(self):
         return self.title
@@ -23,6 +29,12 @@ class Comment(models.Model):
     author_ip = models.CharField(max_length=15)
     content = models.TextField()
     pub_date = models.DateTimeField(auto_now_add=True)
-
+    password = models.CharField(max_length=100, null=True, blank=True)
+    is_deleted = models.BooleanField(default=False) 
+    def delete_with_password(self, password):
+        if self.password == password:
+            self.is_deleted=True
+            return True
+        return False
     def __str__(self):
         return self.content
