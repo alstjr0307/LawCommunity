@@ -78,6 +78,7 @@ class CreatePostView(CreateView):
         form.instance.author_ip = self.request.META.get('HTTP_X_FORWARDED_FOR', self.request.META.get('REMOTE_ADDR'))
 
         return super().form_valid(form)
+
 class ListPostView(ListView):
     model = Post
     template_name = 'Posts/list_post.html'
@@ -106,9 +107,16 @@ class DetailPostView(FormMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         post = self.get_object()
+    
         context['comment_form'] = CommentForm()
         context['time'] = time_elapsed_string(post.pub_date.replace(tzinfo=None))
-        return context
+        context['comment_list'] = Comment.objects.filter(post=post).order_by('-pub_date')
+        for comment in context['comment_list']:
+        
+            comment_time = comment.pub_date.replace(tzinfo=None)
+            comment.time = time_elapsed_string(comment_time)
+            
+        return context  
 
     def get_success_url(self):
         return reverse_lazy('Posts:post_detail', kwargs={'pk': self.object.pk})
