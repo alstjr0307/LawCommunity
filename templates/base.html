@@ -51,13 +51,17 @@
         .nav-link{
           font-family : 'SBTitle_M'
         }
+        .no-link-style {
+          color: inherit;
+          text-decoration: none;
+        }
         
     </style>
     {% block style %}{% endblock %}
 </head>
 <body>
 <nav class="navbar navbar-expand-lg bg-danger navbar-custom">
-<a class="navbar-brand", style="font-face: 'SBTitle'" href="{% url 'home' %}">로스쿨저장소</a>
+<a class="navbar-brand no-link-style", style="font-face: 'SBTitle'; text-decoration:none;" href="{% url 'home' %}">로스쿨저장소</a>
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 <span class="navbar-toggler-icon"></span>
 </button>

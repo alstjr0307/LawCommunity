@@ -69,13 +69,13 @@
 
       <h4 class="mb-4">{{ post.comment_set.count }} 개의 댓글</h4>
       {% for comment in comment_list %}
-      <div class="card comment-card">
+      <div class="card comment-card"id = 'comment-{{comment.id}}'>
         {% if comment.is_deleted %}
         <div class="card-body">
           <p style="color: red;">삭제된 댓글입니다.</p>
         </div>
         {% else %}
-        <div class="card-body">
+        <div class="card-body" >
           <div>
             <span class="emoji" style="font-size: 15px;">👤</span> 
             <span class="card-title">{{ comment.author }}
@@ -84,11 +84,13 @@
             </span>
             <div class="dropdown float-right">
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                메뉴
+                
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="#">수정</a>
-                <a class="dropdown-item" href="#">삭제</a>
+                
+                <a class="dropdown-item" onclick="showDeleteConfirmation({{comment.id}})">삭제</a>
+                
               </div>
             </div>
           </div>
@@ -107,7 +109,28 @@
       {% endfor %}
     </div>
   </div>
-
+  <div class="modal fade" id="password-modal" tabindex="-1" aria-labelledby="password-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="password-modal-label">비밀번호 입력</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="password" class="form-label">비밀번호</label>
+              <input type="password" class="form-control" id="password" name="password">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+          <button type="button" class="btn btn-primary" id="password-submit">확인</button>
+        </div>
+      </div>
+    </div>
+  </div>
 <!-- 댓글 작성 폼 -->
 <div id="comment-form-wrapper" style="background-color: #f5c2c2; padding: 20px; border-radius:15px;">
   <h4 style="margin-bottom: 10px;">댓글 작성</h4>
@@ -178,5 +201,31 @@ tinymce.init({
 });
 
 </script>
-
+<script>
+  function showDeleteConfirmation(commentId) {
+    const password = prompt("비밀번호를 입력하세요:", "");
+    var data = new FormData();
+    data.append('password', password);
+    if (password != null) {
+      const url = "/posts/" + "comment/" + commentId + "/delete/";
+      const csrf_token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader("X-CSRFToken", csrf_token);
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          const commentElement = document.getElementById("comment-" + commentId);
+          commentElement.parentNode.removeChild(commentElement);
+          alert("댓글이 삭제됐습니다.")
+        } else {
+          alert("비밀번호가 틀렸습니다.");
+        }
+      };
+      xhr.send(data);
+    }
+  }
+  
+</script>
+  
+  
 {% endblock %}

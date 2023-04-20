@@ -60,7 +60,8 @@ def delete_comment(request, pk):
         post_pk = comment.post.pk
         if comment.delete_with_password(password):
             messages.success(request, '댓글이 삭제되었습니다.')
-            return redirect('Posts:post:detail', pk=post_pk)
+            comment.is_deleted=True
+            return redirect('Posts:post_detail', pk=post_pk)
         else:
             messages.error(request, '비밀번호가 일치하지 않습니다.')
             return redirect('Posts:post_detail', pk=post_pk)
@@ -110,12 +111,17 @@ class DetailPostView(FormMixin, DetailView):
     
         context['comment_form'] = CommentForm()
         context['time'] = time_elapsed_string(post.pub_date.replace(tzinfo=None))
-        context['comment_list'] = Comment.objects.filter(post=post).order_by('-pub_date')
-        for comment in context['comment_list']:
-        
+        comments = Comment.objects.filter(post=post).order_by('-pub_date')
+        comment_list = []
+        for comment in comments:
             comment_time = comment.pub_date.replace(tzinfo=None)
             comment.time = time_elapsed_string(comment_time)
-            
+            comment.id = comment.pk
+            comment_list.append(comment)
+            print(comment.id)
+        context['comment_list'] = comment_list
+                
+                
         return context  
 
     def get_success_url(self):
@@ -159,22 +165,22 @@ class PostDeleteView(DeleteView):
     def form_invalid(self):
         return super().form_invalid()
 
+from django.http import HttpResponseRedirect
 
-class CommentDeleteView(DeleteView):
+class CommentDeleteView(DetailView):
     model = Comment
     template_name = 'Posts/comment_confirm_delete.html'
 
-    def get_success_url(self):
-        post_id = self.object.post.pk
-        return reverse_lazy('post_detail', kwargs={'pk': post_id})
-
-    def delete(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         password = request.POST.get('password')
-        if self.object.delete_with_password(password):
-            return self.post(request, *args, **kwargs)
-        else:
-            return self.form_invalid()
 
-    def form_invalid(self):
-        return super().form_invalid()
+        if password == self.object.password:
+            self.object.is_deleted = True
+            self.object.save()
+            return redirect(self.get_success_url())
+        else:
+            return self.get(self, request, *args, **kwargs)
+
+    def get_success_url(self):
+        return self.request.META.get('HTTP_REFERER') or reverse_lazy('home')
