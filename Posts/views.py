@@ -149,21 +149,25 @@ class DetailPostView(FormMixin, DetailView):
             return self.form_invalid(form)
 
         
-class PostDeleteView(DeleteView):
+class PostDeleteView(DetailView):
     model = Post
-    success_url = reverse_lazy('post_list')
+    success_url = reverse_lazy('Posts:post_list')
     template_name = 'Posts/post_confirm_delete.html'
 
-    def delete(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         password = request.POST.get('password')
-        if self.object.delete_with_password(password):
-            return self.post(request, *args, **kwargs)
+        if password == self.object.password:
+            self.object.is_deleted = True
+            self.object.save()
+            return redirect(self.get_success_url())
         else:
-            return self.form_invalid()
+            return self.get(self, request, *args, **kwargs)
 
     def form_invalid(self):
         return super().form_invalid()
+    def get_success_url(self):
+        return reverse_lazy('Posts:post_list')
 
 from django.http import HttpResponseRedirect
 
