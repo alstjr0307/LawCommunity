@@ -66,7 +66,8 @@
             </a>
 
             <div class="dropdown-menu" aria-labelledby="postMenuButton">
-              <a class="dropdown-item" href="">수정</a>
+              <a class="dropdown-item" href="{% url 'Posts:post_update' post.pk %}">수정</a>
+
               <a class="dropdown-item delete-post" href="{% url 'Posts:delete_post' pk=post.id %}" data-post-id="{{ post.pk }}">삭제</a>
             </div>
           </div>

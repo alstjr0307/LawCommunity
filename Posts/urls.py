@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import path
-from .views import ListPostView, DetailPostView, CreatePostView,CommentDeleteView,PostDeleteView
+from .views import ListPostView, DetailPostView, CreatePostView,CommentDeleteView,PostDeleteView,PostUpdateView
 from LawCommunity.views import upload_image
 
 app_name = 'Posts'
@@ -31,4 +31,5 @@ urlpatterns = [
     path('<int:pk>/delete/', PostDeleteView.as_view(), name='delete_post'),
     # 댓글 삭제
     path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='delete_comment'),
+    path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post_update'),
 ]

@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView,CreateView,DeleteView
+from django.views.generic import ListView, DetailView,CreateView,DeleteView,UpdateView
 from .models import Post, Comment
 from .forms import PostForm,CommentForm
 from django.views.generic.edit import FormMixin
@@ -15,6 +15,7 @@ import datetime
 from django.utils import timezone
 from datetime import timedelta
 from django.http import Http404
+from .forms import PostForm
 def time_elapsed_string(dt):
     """
     현재 시간과 비교하여 지난 시간을 분으로 환산하여 분 단위로 표시해주는 함수
@@ -170,6 +171,26 @@ class PostDeleteView(DetailView):
         return reverse_lazy('Posts:post_list')
 
 from django.http import HttpResponseRedirect
+
+
+class PostUpdateView(UpdateView):
+    model = Post
+    fields = ['title', 'content', 'password']
+    template_name_suffix = '_update_form'
+
+    def form_valid(self, form):
+        print('ss')
+        self.object = form.save(commit=False)
+        password = form.cleaned_data['password']
+        if password == self.object.password:
+            self.object.save()
+            print('sss')
+            return redirect(self.get_success_url())
+        else:
+            print('nono')
+            return self.form_invalid(form)
+    def get_success_url(self):
+        return reverse_lazy('Posts:post_detail', kwargs={'pk': self.object.pk})
 
 class CommentDeleteView(DetailView):
     model = Comment
