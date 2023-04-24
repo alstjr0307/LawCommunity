@@ -6,7 +6,7 @@
 <div class="container my-5">
   <h2 class="mb-3">게시물 수정</h2>
   <hr>
-  <form method="POST" enctype="multipart/form-data">
+  <form method="POST">
     {% csrf_token %}
     <div class="form-group row">
       <label for="{{ form.author.id_for_label }}" class="col-sm-2 col-form-label">작성자</label>

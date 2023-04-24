@@ -72,7 +72,7 @@ def delete_comment(request, pk):
 
 class CreatePostView(CreateView):
     model = Post
-    fields = ['title', 'content', 'password','image', 'author',]
+    fields = ['title', 'content', 'password', 'author',]
     template_name = 'Posts/create_post.html'
     success_url = reverse_lazy('Posts:post_list')
 
@@ -121,6 +121,7 @@ class DetailPostView(FormMixin, DetailView):
             comment_list.append(comment)
             print(comment.id)
         context['comment_list'] = comment_list
+        context['post_password'] = post.password
                 
                 
         return context  
@@ -175,23 +176,17 @@ from django.http import HttpResponseRedirect
 
 class PostUpdateView(UpdateView):
     model = Post
-    fields = ['title', 'content', 'password']
+    fields = ['title', 'content', ]
     template_name_suffix = '_update_form'
-
+    def get_object(self): 
+        post = get_object_or_404(Post, pk=self.kwargs['pk']) #4
+        return post
     def form_valid(self, form):
-        print('ss')
-        self.object = form.save(commit=False)
-        password = form.cleaned_data['password']
-        if password == self.object.password:
-            self.object.save()
-            print('sss')
-            return redirect(self.get_success_url())
-        else:
-            print('nono')
-            return self.form_invalid(form)
+        form.instance.author_ip = self.request.META.get('HTTP_X_FORWARDED_FOR', self.request.META.get('REMOTE_ADDR'))
+
+        return super().form_valid(form)
     def get_success_url(self):
         return reverse_lazy('Posts:post_detail', kwargs={'pk': self.object.pk})
-
 class CommentDeleteView(DetailView):
     model = Comment
     template_name = 'Posts/comment_confirm_delete.html'

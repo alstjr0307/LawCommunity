@@ -66,9 +66,36 @@
             </a>
 
             <div class="dropdown-menu" aria-labelledby="postMenuButton">
-              <a class="dropdown-item" href="{% url 'Posts:post_update' post.pk %}">수정</a>
+              <a class="dropdown-item" id="btn-edit"  data-toggle="modal" data-target="#myModal">수정</a>
 
               <a class="dropdown-item delete-post" href="{% url 'Posts:delete_post' pk=post.id %}" data-post-id="{{ post.pk }}">삭제</a>
+            </div>
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">비밀번호 입력</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form id="password-form" action = "{% url 'Posts:post_update' pk=post.id %}">
+                      {% csrf_token %}
+                      <div class="form-group row">
+                        <label for="password-input" class="col-sm-3 col-form-label">비밀번호</label>
+                        <div class="col-sm-9">
+                          <input type="password" name="password" class="form-control" id="password-input" required>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-primary" id="password-confirm">확인</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -106,6 +133,34 @@
                 <a class="dropdown-item" onclick="showDeleteConfirmation({{comment.id}})">삭제</a>
                 
               </div>
+              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="myModalLabel">비밀번호 입력</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form id="password-form">
+                        {% csrf_token %}
+                        <div class="form-group row">
+                          <label for="password-input" class="col-sm-3 col-form-label">비밀번호</label>
+                          <div class="col-sm-9">
+                            <input type="password" name="password" class="form-control" id="password-input" required>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                      <button type="button" class="btn btn-primary" id="password-confirm">확인</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
             </div>
           </div>
           <br>
@@ -123,31 +178,10 @@
       {% endfor %}
     </div>
   </div>
-  <div class="modal fade" id="password-modal" tabindex="-1" aria-labelledby="password-modal-label" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="password-modal-label">비밀번호 입력</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="mb-3">
-              <label for="password" class="form-label">비밀번호</label>
-              <input type="password" class="form-control" id="password" name="password">
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-          <button type="button" class="btn btn-primary" id="password-submit">확인</button>
-        </div>
-      </div>
-    </div>
-  </div>
+
 <!-- 댓글 작성 폼 -->
 <div id="comment-form-wrapper" style="background-color: #f5c2c2; padding: 20px; border-radius:15px;">
-  <h4 style="margin-bottom: 10px;">댓글 작성</h4>
+
   <form id="comment-form" method="post">
     {% csrf_token %}
     <div class="form-group row">
@@ -238,8 +272,28 @@ tinymce.init({
       xhr.send(data);
     }
   }
+
   
 </script>
-  
+<script>
+  $(document).ready(function() {
+    $("#myModal").modal('show');
+  });
+
+  $("#password-confirm").on("click", function(e) {
+    e.preventDefault();
+
+    var password = $("#password-input").val();
+    var post_password = "{{ post.password }}";
+    if (password === post_password) {
+      window.location.href = "/posts/" + "post/" + {{post.id}} + "/update/";
+    } else {
+      alert('비밀번호가 일치하지 않습니다.');
+      $("#password-input").val('');
+    }
+  });
+</script>
+
+
   
 {% endblock %}
