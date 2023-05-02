@@ -24,6 +24,7 @@ urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('posts/',include('Posts.urls')),
     path('tinymce/', include('tinymce.urls')),
+    path('realEstate/', include('realEstate.urls')),
 
 ]
 urlpatterns += static(STATIC_URL, document_root=STATIC_ROOT)

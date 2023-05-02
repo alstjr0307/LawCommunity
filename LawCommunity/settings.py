@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'froala_editor',
     'ckeditor',
     'tinymce',
+    'realEstate'
+
 ]
 
 MIDDLEWARE = [
