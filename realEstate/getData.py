@@ -26,6 +26,7 @@ df = pd.DataFrame()
 rowList=[]  # 전체 행을 저장할 변수
 nameList=[] # 열(칼럼) 이름을 저장할 변수
 item_content=[] # 각 행별 칼럼값들을 저장할 임시공간
+flag=0
 
 # 추출 모듈
 for each in month_digit:
@@ -36,6 +37,7 @@ for each in month_digit:
     params ={'serviceKey' : decoding, 'pageNo' : '1', 'numOfRows' : '10000', 'LAWD_CD' : areacode, 'DEAL_YMD' : yearmonth }
 
     response = requests.get(url, params=params).text
+    
     xmlobj = BeautifulSoup(response, 'lxml-xml')
     rows = xmlobj.findAll('item')
     j = 0
@@ -47,17 +49,21 @@ for each in month_digit:
     for i in range(rowsLen):
         columns = rows[i].find_all() # 1번째 행(row)의 모든 요소값들을 칼럼으로 한다.
         columnsLen = len(columns)    # 1번째 행(row)의 요소길이를 열(column) 길이로 한다.
-
         for j in range(0, columnsLen):
-            if i == 0 and columns[j].name not in nameList:    # 첫번째 행 데이터 수집시 컬럼 값 저장
-                nameList.append(columns[j].name)    # name 값만 추출한다
+            if i == 0 and flag==0:    # 첫번째 행 데이터 수집시 컬럼 값 저장
+                nameList.append(columns[j].name)   # name 값만 추출한다\
 
             eachColumn = columns[j].text    # 각 행(i)의 각 열(j)의 텍스트만 추출한다.
-            item_content.append(eachColumn)   # 각 칼럼값을 append하여 1개 행을 만든다.
+            item_content.append(eachColumn)
+            if j==9 and columnsLen==28:
+                item_content.pop()
+                
+
         rowList.append(item_content)    # 전체 리스트 공간에 개별 행을 append한다.
         item_content=[] # 다음 row의 값을 입력받기 위해 비워준다.
-
+        flag=1
 print(f'총 {sum(count)}개의 거래내역이 확인되었습니다.')
-print(nameList, rowList)
+
 df = pd.DataFrame(rowList, columns = nameList)
+df.head(50)
 df.to_csv('data.csv', index=False)

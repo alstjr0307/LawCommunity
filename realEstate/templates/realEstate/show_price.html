@@ -1,24 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>부동산 실거래 페이지</title>
-</head>
-<body>
-  <h1>부동산 실거래 정보</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>거래일자</th>
-        <th>아파트</th>
-        <th>면적</th>
-        <th>층</th>
-        <th>거래가</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{ pandas_data|safe }}
-    </tbody>
-  </table>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="row">
+    {% for row in data %}
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">{{ row.아파트 }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ row.전용면적 }}m²</h6>
+            <p class="card-text">{{ row.거래금액 }}만원</p>
+            <p class="card-text">층: {{ row.층 }}</p>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
