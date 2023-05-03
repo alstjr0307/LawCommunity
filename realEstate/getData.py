@@ -58,12 +58,13 @@ for each in month_digit:
             if j==9 and columnsLen==28:
                 item_content.pop()
                 
-
         rowList.append(item_content)    # 전체 리스트 공간에 개별 행을 append한다.
         item_content=[] # 다음 row의 값을 입력받기 위해 비워준다.
         flag=1
 print(f'총 {sum(count)}개의 거래내역이 확인되었습니다.')
 
 df = pd.DataFrame(rowList, columns = nameList)
+df['거래일자'] = df['년'].astype(str) + '-' + df['월'].astype(str).str.zfill(2) + '-' + df['일'].astype(str).str.zfill(2)
+df = df.sort_values(by='거래일자', ascending=False)
 df.head(50)
 df.to_csv('data.csv', index=False)

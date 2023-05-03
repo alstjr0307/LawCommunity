@@ -2,6 +2,21 @@
 
 {% block content %}
   <div class="row">
+    <div class="col-md-12">
+      <form action="" method="get">
+        <div class="form-row">
+          <div class="col">
+            <input type="date" class="form-control" name="start_date">
+          </div>
+          <div class="col">
+            <input type="date" class="form-control" name="end_date">
+          </div>
+          <div class="col">
+            <button type="submit" class="btn btn-primary">검색</button>
+          </div>
+        </div>
+      </form>
+    </div>
     {% for row in data %}
       <div class="col-md-4">
         <div class="card mb-4">
@@ -10,9 +25,12 @@
             <h6 class="card-subtitle mb-2 text-muted">{{ row.전용면적 }}m²</h6>
             <p class="card-text">{{ row.거래금액 }}만원</p>
             <p class="card-text">층: {{ row.층 }}</p>
+            <p class="card-text">거래일: {{ row.년 }}년 {{ row.월 }}월 {{ row.일 }}일</p>
           </div>
         </div>
       </div>
+    {% empty %}
+      <p>조건에 맞는 데이터가 없습니다.</p>
     {% endfor %}
   </div>
 {% endblock %}
