@@ -8,7 +8,7 @@ class RealEstateTransactionView(TemplateView):
     def get_context_data(self, **kwargs):
         # Load data from CSV
         df = pd.read_csv('data.csv')
-        df = df[['아파트', '거래금액', '전용면적', '층', '년','월','일']]
+        df = df[['아파트', '거래금액', '전용면적', '층', '년','월','일','거래일자']]
         
         # Filter data by date range
         start_date = self.request.GET.get('start_date')
