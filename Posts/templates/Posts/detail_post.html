@@ -49,6 +49,7 @@
   float: right;
   text-align: right;
 }
+
 </style>
 {% endblock %}
 {% block content %}
@@ -108,7 +109,7 @@
     <div class="col-md-12">
       <hr class="my-4">
 
-      <h4 class="mb-4">{{ post.comment_set.count }} 개의 댓글</h4>
+      <h4 class="mb-4">{{ comment_count }} 개의 댓글</h4>
       {% for comment in comment_list %}
       <div class="card comment-card"id = 'comment-{{comment.id}}'>
         {% if comment.is_deleted %}
@@ -197,10 +198,13 @@
         <input type="password" required=True name="{{ form.password.name }}" id="{{ form.password.id_for_label }}" class="form-control" placeholder="비밀번호 입력">
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group column">
       <textarea name="content" placeholder="내용" class="form-control" style="height: 100px;", required=True></textarea>
+      <div style=" margin-top:10px"><button type="submit" class="btn btn-primary" style="  display: block;
+        margin-left: auto;
+        margin-right: 0;">작성</button></div>
+
       
-      <button type="submit" class="btn btn-primary float-right">작성</button>
     </div>
 
   </form>

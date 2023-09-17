@@ -122,6 +122,8 @@ class DetailPostView(FormMixin, DetailView):
             print(comment.id)
         context['comment_list'] = comment_list
         context['post_password'] = post.password
+        context['comment_count'] = len(Comment.objects.filter(is_deleted =False).filter(post=post))
+        
                 
                 
         return context  
