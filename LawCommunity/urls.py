@@ -25,7 +25,8 @@ urlpatterns = [
     path('posts/',include('Posts.urls')),
     path('tinymce/', include('tinymce.urls')),
     path('realEstate/', include('realEstate.urls')),
-
+    path('calculation/', include('calculation.urls')),
+    path('salary/', include('salary.urls'))
 ]
 urlpatterns += static(STATIC_URL, document_root=STATIC_ROOT)
 urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)

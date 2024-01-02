@@ -1,0 +1,21 @@
+<!-- myapp/templates/result.html -->
+
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h1 class="card-title text-center">수당 계산 결과</h1>
+            <p class="card-text text-center">총 수당: {{ salary_result|intcomma }} 원</p>
+            <div class="text-center">
+              <a href="{% url 'calculation:calculate_salary' %}" class="btn btn-primary mt-3">다시 계산하기</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

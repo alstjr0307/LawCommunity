@@ -1,0 +1,8 @@
+<!-- result.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>연봉 계산 결과</h1>
+  <p>총 연봉: {{ final_salary }}</p>
+  <a href="{% url 'salary:calculate_salary' %}">다시 계산하기</a>
+{% endblock %}

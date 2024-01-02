@@ -1,0 +1,10 @@
+<!-- salary/templates/salary/calculate.html -->
+{% extends 'base.html' %}
+{% block content %}
+  <h1>수당 계산</h1>
+  <form method="post" action="{% url 'salary:calculate_salary' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">계산하기</button>
+  </form>
+{% endblock %}
