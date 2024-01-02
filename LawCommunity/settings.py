@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-o+b%g220@lxu*r-dw(-)*maju$+1gnsxdfex%hg1wo0nd+em-j
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    ".ap-southeast-2.compute.amazonaws.com"
+    'ec2-54-253-37-99.ap-southeast-2.compute.amazonaws.com'
 ]
 
 STATIC_URL = '/static/'
