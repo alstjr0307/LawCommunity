@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure-o+b%g220@lxu*r-dw(-)*maju$+1gnsxdfex%hg1wo0nd+em-j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    ".ap-southeast-2.compute.amazonaws.com"
+]
 
 STATIC_URL = '/static/'
 CKEDITOR_UPLOAD_PATH = "uploads/"
