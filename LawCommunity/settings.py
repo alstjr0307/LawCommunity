@@ -41,6 +41,9 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (AWS_STORAGE_BUCKET_NAME,AWS_R
 # Static Setting
 STATIC_URL = "https://%s/static/" % AWS_S3_CUSTOM_DOMAIN
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
 # Media Setting
  
 MEDIA_URL = "https://%s/meida/" % AWS_S3_CUSTOM_DOMAIN
@@ -49,7 +52,7 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-
 CKEDITOR_UPLOAD_PATH =  "https://%s/upload/" % AWS_S3_CUSTOM_DOMAIN
 MEDIA_ROOT = '/media/'
-STATIC_ROOT = '/static/'
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
