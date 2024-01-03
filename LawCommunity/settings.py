@@ -27,7 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'ec2-54-253-37-99.ap-southeast-2.compute.amazonaws.com',
-    '127.0.0.1'
+    '127.0.0.1',
+    '.lovepol.site'
 ]
 # AWS Setting
 AWS_REGION = 'ap-northeast-2' #AWS서버의 지역
