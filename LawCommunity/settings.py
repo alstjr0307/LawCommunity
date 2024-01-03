@@ -48,7 +48,7 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-
 CKEDITOR_UPLOAD_PATH =  "https://%s/upload/" % AWS_S3_CUSTOM_DOMAIN
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join('static')
 MEDIA_ROOT = os.path.join('media')
 
 INSTALLED_APPS = [
