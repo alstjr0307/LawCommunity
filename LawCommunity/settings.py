@@ -153,7 +153,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-TINYMCE_JS_URL = "https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js";
+TINYMCE_JS_URL = "https://cdn.tiny.cloud/1/mkh28xn9k93sloirtwn9dbb5dkx485y6cndip1f25n9eno78/tinymce/6/tinymce.min.js";
 
 TINYMCE_COMPRESSOR = False;
 TINYMCE_DEFAULT_CONFIG = {
@@ -168,18 +168,14 @@ TINYMCE_DEFAULT_CONFIG = {
             visualchars code fullscreen autolink lists  charmap print  hr
             anchor pagebreak
             ''',
-    'toolbar1': '''
-            fullscreen preview bold italic underline | fontselect,
-            fontsizeselect  | forecolor backcolor | alignleft alignright |
-            aligncenter alignjustify | indent outdent | bullist numlist table |
-            | link image media | codesample |
+    'toolbar1': ''' link image media | codesample |
             ''',
     'toolbar2': '''
             visualblocks visualchars |
             charmap hr pagebreak nonbreaking anchor |  code |
             ''',
     'contextmenu': 'formats | link image',
-    'menubar': True,
+    'menubar': False,
     'statusbar': True,
     'theme_advanced_resizing': True,
     "images_upload_url": "upload_image",
