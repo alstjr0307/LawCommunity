@@ -154,7 +154,7 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 TINYMCE_JS_URL = "https://cdn.tiny.cloud/1/mkh28xn9k93sloirtwn9dbb5dkx485y6cndip1f25n9eno78/tinymce/6/tinymce.min.js";
-
+SECURE_REFERRER_POLICY = 'origin'
 TINYMCE_COMPRESSOR = False;
 TINYMCE_DEFAULT_CONFIG = {
     'cleanup_on_startup': True,
