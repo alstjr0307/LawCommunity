@@ -38,18 +38,24 @@ AWS_ACCESS_KEY_ID = 'AKIAS47VJHXO3OFD2TEU' #액서스 키 ID
 AWS_SECRET_ACCESS_KEY = 'Jc4CbK6gaP6ZjPLmNpnlPd6PmpJyrbkZs7LX6Wo1' #액서스 키 PW
 #버킷이름.s3.AWS서버지역.amazonaws.com 형식
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (AWS_STORAGE_BUCKET_NAME,AWS_REGION)
+
+
+
 # Static Setting
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    STATIC_DIR,
+]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 STATIC_URL = "https://%s/static/" % AWS_S3_CUSTOM_DOMAIN
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'backend.storages.StaticStorage'
 # Media Setting
  
 MEDIA_URL = "https://%s/meida/" % AWS_S3_CUSTOM_DOMAIN
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'backend.storages.MediaStorage'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-
 CKEDITOR_UPLOAD_PATH =  "https://%s/upload/" % AWS_S3_CUSTOM_DOMAIN
-MEDIA_ROOT = '/media/'
-STATIC_ROOT = '/static/'
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
