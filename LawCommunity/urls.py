@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path,include
 from .views import HomeView, upload_image
 from django.conf.urls.static import static
-from .settings import STATIC_URL, MEDIA_ROOT, STATIC_ROOT, MEDIA_URL
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', HomeView.as_view(), name='home'),
@@ -28,5 +28,3 @@ urlpatterns = [
     path('calculation/', include('calculation.urls')),
     path('salary/', include('salary.urls'))
 ]
-urlpatterns += static(STATIC_URL, document_root=STATIC_ROOT)
-urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)
