@@ -24,11 +24,11 @@ def upload_image(request):
     if file_name_suffix not in ["jpg", "png", "gif", "jpeg"]:
         return JsonResponse({"Error Message": f"Wrong file suffix ({file_name_suffix}), supported are .jpg, .png, .gif, .jpeg"})
 
-    file_path = 'https://lawcommunity.s3.ap-northeast-2.amazonaws.com/media/%s' %file_obj.name
-    print(file_path)
+    file_path = 'https://lawcommunity.s3.ap-northeast-2.amazonaws.com/media/;'
+    
     if os.path.exists(file_path):
         file_obj.name = str(uuid4()) + '.' + file_name_suffix
-        file_path = 'https://lawcommunity.s3.ap-northeast-2.amazonaws.com/media/%s' %file_obj.name
+        file_path = os.path.join(settings.MEDIA_ROOT, 'Posts', file_obj.name)
 
     with open(file_path, 'wb+') as f:
         for chunk in file_obj.chunks():
@@ -42,7 +42,7 @@ def upload_image(request):
 
         return JsonResponse({
             'message': 'Image uploaded successfully',
-            'location': 'https://lawcommunity.s3.ap-northeast-2.amazonaws.com/media/%s' %file_obj.name
+            'location': os.path.join(settings.MEDIA_URL, 'Posts',  file_obj.name)
         })    
 class HomeView(TemplateView):
     template_name = 'home.html'
