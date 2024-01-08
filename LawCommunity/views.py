@@ -9,41 +9,32 @@ import os
 from uuid import uuid4
 from PIL import Image
 from Posts.models import Post
+import boto3
 ...
-
-@csrf_exempt
+@csrf_exempt  # Use csrf_exempt for simplicity in this example, consider using csrf token in production
 def upload_image(request):
-    if request.method != "POST":
-        return JsonResponse({'Error Message': "Wrong request"})
+    if request.method == 'POST' and request.FILES.get('file'):
+        uploaded_file = request.FILES['file']
+        # Handle the file upload and save it to your storage (S3 in your case)
 
-    # If it's not series and not article, handle it differently
-  
+        # Example using django-storages and boto3
+        from storages.backends.s3boto3 import S3Boto3Storage
+        from django.core.files.storage import default_storage
 
-    file_obj = request.FILES['file']
-    file_name_suffix = file_obj.name.split(".")[-1]
-    if file_name_suffix not in ["jpg", "png", "gif", "jpeg"]:
-        return JsonResponse({"Error Message": f"Wrong file suffix ({file_name_suffix}), supported are .jpg, .png, .gif, .jpeg"})
+        class MediaStorage(S3Boto3Storage):
+            location = 'media'
+            file_overwrite = False
 
-    file_path = 'https://lawcommunity.s3.ap-northeast-2.amazonaws.com/media/;'
-    
-    if os.path.exists(file_path):
-        file_obj.name = str(uuid4()) + '.' + file_name_suffix
-        file_path = os.path.join(settings.MEDIA_ROOT, 'Posts', file_obj.name)
+        # Save the file to your S3 bucket
+        storage = MediaStorage()
+        filename = storage.save(uploaded_file.name, uploaded_file)
 
-    with open(file_path, 'wb+') as f:
-        for chunk in file_obj.chunks():
-            f.write(chunk)
-        with Image.open(file_path) as image:
-            if image.width > 400:
-                ratio = 400 / image.width
-                height = int(image.height * ratio)
-                image = image.resize((400, height))
-                image.save(file_path)
+        # Construct the URL to the saved image
+        image_url = storage.url(filename)
 
-        return JsonResponse({
-            'message': 'Image uploaded successfully',
-            'location': os.path.join(settings.MEDIA_URL, 'Posts',  file_obj.name)
-        })    
+        return JsonResponse({'location': image_url})
+    else:
+        return JsonResponse({'error': 'Invalid request'})
 class HomeView(TemplateView):
     template_name = 'home.html'
 
