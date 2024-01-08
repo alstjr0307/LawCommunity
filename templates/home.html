@@ -4,20 +4,19 @@
 
 {% block content %}
   <div class="container my-4 mx-auto">
-    <h1 class="text-center">커뮤니티 사이트</h1>
     <hr>
     <div class="d-flex flex-wrap">
       {% for post in posts %}
         <div class="card mb-4 mx-2" style="width: 18rem;">
-<!-- Inside the for loop where you display post content -->
-      <div class="card-body">
-          <h5 class="card-title">{{ post.title }}</h5>
-          <p class="card-text">{{ post.content|striptags|safe }}</p>
-      </div>
-
-          <div class="card-footer">
-            <small class="text-muted">{{ post.pub_date }}</small>
-          </div>
+          <a href="{% url 'Posts:post_detail' pk=post.pk %}" style="text-decoration: none; color: inherit;">
+            <div class="card-body">
+              <h5 class="card-title">{{ post.title }}</h5>
+              <p class="card-text">{{ post.content|striptags|safe }}</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">{{ post.pub_date }}</small>
+            </div>
+          </a>
         </div>
       {% endfor %}
     </div>

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from tinymce.models import HTMLField 
 from django.urls import reverse
+
 class Post(models.Model):
     title = models.CharField(max_length=20)
     content = HTMLField()
@@ -23,7 +24,8 @@ class Post(models.Model):
     def summary(self):
         return self.content[:100]
     
-
+    def get_absolute_url(self):
+        return reverse('Posts:post_detail', kwargs={'pk': self.pk})
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)

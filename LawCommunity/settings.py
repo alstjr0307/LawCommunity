@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'salary',
     'storages',
     'rest_framework',
+    'htmlmin'
 
 ]
 
