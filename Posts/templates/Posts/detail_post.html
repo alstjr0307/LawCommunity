@@ -50,62 +50,6 @@
   text-align: right;
 }
 
-
-{% extends 'base.html' %}
-{% load crispy_forms_tags %}
-{% block style %}
-<!-- 기존 스타일 코드 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-<style>
-  .emoji {
-    font-size: 20px;
-  }
-
-  img {
-    padding: 0;
-    display: block;
-    margin: 0 auto auto 0;
-    height: 100%; /* Adjust the height as needed */
-    width: 100%;  /* Adjust the width as needed */
-    cursor: pointer; /* Add pointer cursor to indicate clickable images */
-  }
-
-  .comment-card {
-    background-color: #f5f5f5;
-    margin-bottom: 15px;
-  }
-
-  .comment-card .card-body {
-    padding: 10px 15px;
-  }
-
-  .comment-card .card-title {
-    font-size: 16px;
-    margin-bottom: 5px;
-  }
-
-  .comment-card .card-title small {
-    font-size: 14px;
-  }
-
-  .comment-card .card-text {
-    font-size: 14px;
-    margin-bottom: 0;
-  }
-
-  .comment-card .card-footer {
-    background-color: #f5f5f5;
-    border-top: none;
-    font-size: 12px;
-    padding: 5px 15px;
-  }
-
-  .comment-card .card-footer small {
-    float: right;
-    text-align: right;
-  }
-
-  /* 추가된 스타일: 이미지 모달 스타일 */
   #imageModal {
     display: none; /* 기본적으로 모달은 숨겨져 있음 */
     position: fixed;
