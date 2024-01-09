@@ -74,7 +74,6 @@ INSTALLED_APPS = [
     'salary',
     'storages',
     'rest_framework',
-    'htmlmin'
 
 ]
 
@@ -167,20 +166,9 @@ TINYMCE_DEFAULT_CONFIG = {
     'custom_undo_redo_levels': 20,
     'selector': 'textarea',
     'theme': 'silver',
-    'plugins': '''
-            textcolor save link image media preview codesample contextmenu
-            table code lists fullscreen  insertdatetime  nonbreaking
-            contextmenu directionality searchreplace wordcount visualblocks
-            visualchars code fullscreen autolink lists  charmap print  hr
-            anchor pagebreak
-            ''',
-    'toolbar1': ''' link image media | codesample |
-            ''',
-    'toolbar2': '''
-            visualblocks visualchars |
-            charmap hr pagebreak nonbreaking anchor |  code |
-            ''',
-    'contextmenu': 'formats | link image',
+    'plugins': 'image',
+    'toolbar1': 'image',
+    'contextmenu': 'link image',
     'menubar': False,
     'statusbar': True,
     'theme_advanced_resizing': True,

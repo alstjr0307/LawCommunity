@@ -29,11 +29,7 @@
 
   .post-item .date {
     font-size: 16px;
-  }
-
-  h1 {
-    font-family : 'SBTitle';
-  }
+  }  
   /* 각 게시물을 담고 있는 요소인 .card-body에 대한 스타일 */
   .card-body {
     display: flex;
@@ -58,12 +54,13 @@
 {% block content %}
 <div class="container">
   <div class="posts-header">
-    <h1 style="font-family: 'SBTitle'">자유게시판</h1>
+    <h3 style="font-family: 'NanumGothic'">자유게시판</h1>
     <div>
       <a href="{% url 'Posts:post_new' %}" class="btn">✏️</a>
     </div>
   </div>
   <hr>
+</div>
 
   {% if posts %}
 

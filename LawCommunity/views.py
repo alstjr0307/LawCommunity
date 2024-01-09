@@ -11,13 +11,23 @@ from PIL import Image
 from Posts.models import Post
 import boto3
 ...
-@csrf_exempt  # Use csrf_exempt for simplicity in this example, consider using csrf token in production
+@csrf_exempt
 def upload_image(request):
     if request.method == 'POST' and request.FILES.get('file'):
         uploaded_file = request.FILES['file']
-        # Handle the file upload and save it to your storage (S3 in your case)
 
-        # Example using django-storages and boto3
+        # Open the uploaded image
+        img = Image.open(uploaded_file)
+
+        # Resize the image (adjust the size as needed)
+        max_size = (600, 450)
+        img.thumbnail(max_size)
+
+        # Save the resized image
+        resized_image_path = f"resized_{uploaded_file.name}"
+        img.save(resized_image_path)
+
+        # Upload the resized image to your S3 bucket
         from storages.backends.s3boto3 import S3Boto3Storage
         from django.core.files.storage import default_storage
 
@@ -25,9 +35,8 @@ def upload_image(request):
             location = 'media'
             file_overwrite = False
 
-        # Save the file to your S3 bucket
         storage = MediaStorage()
-        filename = storage.save(uploaded_file.name, uploaded_file)
+        filename = storage.save(resized_image_path, open(resized_image_path, 'rb'))
 
         # Construct the URL to the saved image
         image_url = storage.url(filename)
@@ -35,6 +44,8 @@ def upload_image(request):
         return JsonResponse({'location': image_url})
     else:
         return JsonResponse({'error': 'Invalid request'})
+    
+    
 class HomeView(TemplateView):
     template_name = 'home.html'
 
