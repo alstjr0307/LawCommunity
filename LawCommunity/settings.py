@@ -12,15 +12,22 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import json
+import pymysql  
+pymysql.install_as_MySQLdb()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
+ROOT_DIR = os.path.dirname(BASE_DIR)
+SECRET_DIR = os.path.join(ROOT_DIR, '.secrets')
+secrets = json.load(open(os.path.join(SECRET_DIR, 'secrets.json'), 'rb'))
+SECRET_KEY = secrets['SECRET_KEY']
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-o+b%g220@lxu*r-dw(-)*maju$+1gnsxdfex%hg1wo0nd+em-j'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -34,8 +41,8 @@ ALLOWED_HOSTS = [
 # AWS Setting
 AWS_REGION = 'ap-northeast-2' #AWS서버의 지역
 AWS_STORAGE_BUCKET_NAME = 'lawcommunity' #생성한 버킷 이름
-AWS_ACCESS_KEY_ID = 'AKIAS47VJHXO3OFD2TEU' #액서스 키 ID
-AWS_SECRET_ACCESS_KEY = 'Jc4CbK6gaP6ZjPLmNpnlPd6PmpJyrbkZs7LX6Wo1' #액서스 키 PW
+AWS_ACCESS_KEY_ID = secrets['AWS_ACCESS_KEY_ID'] #액서스 키 ID
+AWS_SECRET_ACCESS_KEY = secrets['AWS_SECRET_ACCESS_KEY'] #액서스 키 PW
 #버킷이름.s3.AWS서버지역.amazonaws.com 형식
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (AWS_STORAGE_BUCKET_NAME,AWS_REGION)
 # Static Setting
@@ -113,8 +120,15 @@ WSGI_APPLICATION = 'LawCommunity.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'database',
+        'USER': 'tofusoft',
+        'PASSWORD': secrets['RDS_PASSWORD'],
+        'HOST': secrets['RDS_HOST'],
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': 'SET sql_mode = "STRICT_TRANS_TABLES"'
+        }
     }
 }
 
